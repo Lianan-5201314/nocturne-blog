@@ -91,9 +91,35 @@ cover: /images/covers/xxx.svg   # 文章头图，留空则从 images.yml 随机�
 
 ### 绑定自己的域名（例如 xwhy.live）
 
-1. `source/CNAME` 写入一行：`xwhy.live`
-2. 域名解析：根域名加 4 条 A 记录 `185.199.108.153` / `185.199.109.153` / `185.199.110.153` / `185.199.111.153`；`www` 用 CNAME 指向 `<用户名>.github.io`
-3. 仓库 Settings → Pages → Custom domain 填 `xwhy.live`，勾选 Enforce HTTPS
+**前置条件：域名能正常解析。** 如果 `nslookup xwhy.live` 返回 `Non-existent domain`，说明域名还没注册，或注册后没配置 NS，这一步必须先解决，否则加任何记录都不会生效。
+
+**A. 走 GitHub Pages（地址栏显示 xwhy.live，推荐）**
+
+1. 仓库改成 **Public**（私有仓库不能用 Pages；Settings → General → 拉到底 → Change visibility）
+2. `source/CNAME` 已写入 `xwhy.live`，无需再改；`tools/set-site-root.js` 会自动把 `url` 设为 `https://xwhy.live`、`root` 设为 `/`
+3. 在域名服务商的 DNS 解析里加记录：
+
+   | 主机记录 | 类型 | 记录值 |
+   |---|---|---|
+   | `@` | A | `185.199.108.153` |
+   | `@` | A | `185.199.109.153` |
+   | `@` | A | `185.199.110.153` |
+   | `@` | A | `185.199.111.153` |
+   | `www` | CNAME | `<用户名>.github.io` |
+
+4. 仓库 **Settings → Pages → Custom domain** 填 `xwhy.live` → Save，DNS 校验通过后勾 **Enforce HTTPS**
+5. 生效时间：A 记录通常几分钟，DNS 校验几分钟到 1 小时
+
+> 境外托管（GitHub Pages）不需要 ICP 备案；但如果域名解析到国内服务器才需要。
+
+**B. 只把域名 301 跳到现在的托管链接（最省事，地址栏会变成原链接）**
+
+当前发布在 `app.workbuddy.host` 的站点只提供子域名，没有绑定自定义域名的入口，所以想让 `xwhy.live` 打开这个站，只能在域名侧做转发：
+
+- 在域名服务商控制台找「URL 转发 / 显性 URL / Redirect」，把 `xwhy.live` 与 `www.xwhy.live` 转发到目标地址，选 301
+- 若服务商不提供转发，可把 NS 托管到 Cloudflare，用 **Rules → Redirect Rules** 建一条 `xwhy.live/*` → 目标地址的 301 规则
+
+代价是地址栏最终显示目标域名，且 SEO 权重归目标站；好处是不用管仓库可见性、不用备案、几分钟就能生效。
 
 ## 常见坑
 
