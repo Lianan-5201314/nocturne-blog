@@ -31,17 +31,7 @@ jobs:
         run: npm ci
 
       - name: Resolve url and root (user page vs project page)
-        run: |
-          REPO="${{ github.event.repository.name }}"
-          OWNER="${{ github.repository_owner }}"
-          if [ "$REPO" = "$OWNER.github.io" ]; then
-            ROOT="/"
-          else
-            ROOT="/$REPO/"
-          fi
-          echo "site url = https://$OWNER.github.io, root = $ROOT"
-          npx hexo config url "https://$OWNER.github.io"
-          npx hexo config root "$ROOT"
+        run: node scripts/set-site-root.js "${{ github.repository_owner }}" "${{ github.event.repository.name }}"
 
       - name: Build site
         run: npx hexo generate
