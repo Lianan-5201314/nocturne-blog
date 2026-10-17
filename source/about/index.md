@@ -4,9 +4,9 @@ date: 2026-10-17 14:20:00
 top_image: /images/covers/design-tokens.svg
 ---
 
-## 关于这个夜色里的笔记本
+## 关于这个博客
 
-Nocturne 是一个手写起家的前端技术博客，现在跑在 **Hexo + Stun** 上。没有 CMS，没有后台，只有一堆 Markdown 文件和一条 `hexo generate`。
+星舞互娱的技术博客，从手写开始，现在跑在 **Hexo 7 + ShokaX** 上。没有 CMS，没有后台，只有一堆 Markdown 文件和一条 `hexo generate`。
 
 ## 写什么
 
@@ -24,26 +24,27 @@ Nocturne 是一个手写起家的前端技术博客，现在跑在 **Hexo + Stun
 ```
 hexo-blog/
 ├── _config.yml          # 站点配置
-├── _config.stun.yml     # 主题配置
+├── _config.shokax.yml   # 主题配置
 ├── source/
 │   ├── _posts/          # 文章（Markdown）
+│   ├── _data/           # 头像与封面兜底图
 │   ├── images/          # 图标、头像、封面
 │   ├── about/index.md
 │   ├── categories/index.md
 │   └── tags/index.md
+├── tools/               # 构建时改写 url/root
 └── package.json
 ```
 
 写新文章：
 
 ```bash
-npx hexo new post "文章标题"
-npm run server   # 本地预览 http://localhost:4000
-npm run build    # 生成静态文件到 public/
+npm run new "文章标题"   # source/_posts/文章标题.md
+npm run server            # 本地预览 http://localhost:4000
+npm run build             # 生成静态文件 + 搜索索引到 public/
 ```
 
 ## 联系
 
-- GitHub：[@pixel](https://github.com/)
-- 邮箱：[hello@example.com](mailto:hello@example.com)
+- GitHub：[@Lianan-5201314](https://github.com/Lianan-5201314/nocturne-blog)
 - RSS：[/atom.xml](/atom.xml)

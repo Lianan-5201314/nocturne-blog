@@ -2,9 +2,10 @@
   "name": "nocturne-hexo",
   "version": "1.0.0",
   "private": true,
-  "description": "Nocturne · 基于 Hexo + Stun 的个人技术博客",
+  "description": "星舞互娱 · 基于 Hexo 7 + ShokaX 的技术博客",
   "scripts": {
     "clean": "hexo clean",
+    "new": "hexo new post",
     "build": "hexo generate && pagefind --site public",
     "server": "hexo server",
     "deploy": "hexo deploy",
