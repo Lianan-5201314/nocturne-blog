@@ -128,6 +128,7 @@ Gitee Pages 的自定义域名需要会员，且国内域名需先完成 ICP 备
 | 构建报 `duplicated mapping key` | `_config.stun.yml` 里同一个键写了两次（如两个 `cdn:`） |
 | 构建报 YAML 错误 | `description` 未加引号且含 `:` / 以 `!` 开头 |
 | GitHub Actions 成功但页面 404 | Settings → Pages 的 Source 还没切到 `GitHub Actions` |
+| `ssh: connect to host github.com port 22: Connection refused` | 公司网络/代理挡了 22 端口，改用 443：`~/.ssh/config` 里写 `Host github.com` / `HostName ssh.github.com` / `Port 443` |
 | 订阅/分享链接指向旧域名 | 改完 `_config.yml` 的 `url` 后要重新 `hexo generate` |
 
 ## 许可
