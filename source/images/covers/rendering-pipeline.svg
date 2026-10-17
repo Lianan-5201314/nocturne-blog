@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#08090f" stroke-opacity="0.14" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="600" fill="url(#bg)"/>
+  <rect width="1200" height="600" fill="url(#grid)"/>
+  <circle cx="1010" cy="120" r="230" fill="#ffffff" fill-opacity="0.10"/>
+  <circle cx="120" cy="540" r="180" fill="#08090f" fill-opacity="0.10"/>
+  <text x="72" y="470" font-family="SFMono-Regular,Consolas,monospace" font-size="300"
+        font-weight="700" fill="#08090f" fill-opacity="0.82" letter-spacing="-12">01</text>
+  <text x="76" y="528" font-family="SFMono-Regular,Consolas,monospace" font-size="26"
+        fill="#08090f" fill-opacity="0.55" letter-spacing="10">RENDER</text>
+</svg>

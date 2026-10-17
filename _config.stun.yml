@@ -1,0 +1,290 @@
+# ---------------------------------------------------------------
+# Stun 主题配置（覆盖主题默认值）
+# 完整可选项见 node_modules/hexo-theme-stun/_config.yml
+# ---------------------------------------------------------------
+
+shake_file: true
+index_subtitle: true
+
+# 导航
+menu:
+  home: / || fas fa-home
+  archives: /archives/ || fas fa-folder-open
+  categories: /categories/ || fas fa-layer-group
+  tags: /tags/ || fas fa-tags
+  about: /about/ || fas fa-user
+
+menu_settings:
+  icon_only: false
+  text_only: false
+
+submenu:
+
+# 站点图标（16x16 favicon 由脚本生成，见 source/images）
+favicon:
+  small: /images/favicon-16.png
+  medium: /images/favicon-32.png
+
+# 夜间模式
+night_mode:
+  enable: true
+  button:
+    color: '#fafafa'
+    bg_color: '#5f6b85'
+  icon:
+    dark: 🌜
+    light: 🌞
+
+# 布局尺寸
+layout:
+  content: 780px
+  sidebar: 300px
+  content_sidebar_gap: 32px
+  main_padding:
+    default: 20px
+    tablet: 15px
+    mobile: 10px
+
+# 首屏
+header:
+  enable: true
+  show_on:
+    post: true
+  height: 82%
+  bg_image:
+    enable: false
+    url:
+  banner:
+    enable: true
+    title: Nocturne
+    subtitle: 在终端与夜色之间，记录构建互联网的每一个细节
+  mask:
+    enable: false
+    opacity: 0.5
+  nav:
+    height: 50px
+    bg_color: '#1a2030'
+  scroll_down_icon:
+    enable: true
+    name: fas fa-angle-down
+    animation: true
+
+body:
+  bg_image:
+    enable: false
+  mask:
+    enable: false
+
+# 页脚
+footer:
+  copyright:
+    enable: true
+    text:
+    since: 2026
+    end:
+  icon:
+    enable: true
+    name: fas fa-heart
+    animation: true
+    color: '#ff6b8a'
+  powered:
+    enable: true
+    version: true
+  theme:
+    enable: true
+    version: true
+  beian:
+    enable: false
+    icp:
+  custom:
+    enable: false
+    text:
+
+# 知识共享许可
+creative_commons:
+  enable: true
+  license: BY-NC-SA
+  sidebar: true
+  post: true
+  language: zh
+
+back2top:
+  enable: true
+  icon:
+    name: fas fa-rocket
+    rotate: -45deg
+    color: '#7c5cff'
+    hover_color: '#22d3ee'
+
+# 侧边栏
+sidebar:
+  enable: true
+  position: right
+  offsetTop: 20px
+  horizon_line: false
+
+author:
+  enable: true
+  avatar:
+    url: /images/avatar.svg
+    rounded: true
+    opacity: 1
+    animation: turn
+  motto: 把界面打磨到像素。
+
+social:
+  github: https://github.com/ || fab fa-github
+  mail: mailto:hello@example.com || fas fa-envelope
+  rss: /atom.xml || fas fa-rss
+
+social_setting:
+  enable: false
+  icon_only: true
+
+# 目录
+toc:
+  enable: true
+  list_number: true
+  wrap: true
+  expand_all: false
+  min_depth: 2
+  max_depth: 4
+
+# 订阅
+feed:
+  enable: true
+  email: mailto:hello@example.com
+  rss: /atom.xml
+
+# 阅读进度条
+reading_progress:
+  enable: true
+  color: '#7c5cff'
+  height: 2px
+
+# 正文
+codeblock:
+  style: default
+  highlight: light
+  word_wrap: false
+
+heading_line: true
+
+# 文章元信息
+post_meta:
+  icon_only: false
+  created:
+    enable: true
+    icon: far fa-calendar-plus
+  updated:
+    enable: false
+    icon: far fa-calendar-check
+  reading_time:
+    enable: true
+    icon: far fa-clock
+    speed:
+      zh: 300
+      en: 150
+  word_count:
+    enable: true
+    icon: far fa-file-word
+
+post_list:
+  paginate:
+    home: true
+    archives: false
+  cover_image:
+    home: true
+
+post_widget:
+  tags: true
+  end_text:
+    enable: true
+    horizon_line: true
+  share:
+    enable: false
+
+# 搜索
+local_search:
+  enable: true
+assist_search:
+  enable: false
+
+# 访问统计（busuanzi 依赖 jsDelivr，国内不稳定，默认关闭；接入自建统计后再开）
+busuanzi:
+  enable: false
+  icon_only: false
+  site_uv:
+    enable: true
+    icon: fas fa-user
+  site_pv:
+    enable: true
+    icon: fas fa-eye
+  post_pv:
+    enable: true
+    icon: fas fa-eye
+
+# 动效与图片
+zoom_image:
+  enable: true
+  mask_color: 'rgba(0,0,0,0.65)'
+  gap_aside: 20px
+
+fancybox: false
+lazyload:
+  enable: false
+quicklink:
+  enable: false
+pjax:
+  enable: false
+canvas_ribbon:
+  enable: false
+canvas_nest:
+  enable: false
+math:
+  enable: false
+
+# 标签云
+tag_cloud:
+  start_color: '#7c5cff'
+  end_color: '#22d3ee'
+  min_size: 14
+  max_size: 24
+  max_amount: 200
+
+# 外链图标
+external_link:
+  icon:
+    enable: true
+    name: fas fa-external-link-alt
+    color: '#9aa4bb'
+
+# 快捷键
+shortcuts:
+  switch_post:
+    enable: true
+
+# 评论（默认关闭，接入 Github Discussions / Waline 后再打开）
+gitalk:
+  enable: false
+waline:
+  enable: false
+valine:
+  enable: false
+disqus:
+  enable: false
+utterances:
+  enable: false
+
+# 统计代码（按需填写）
+google_analytics:
+baidu_analytics:
+google_adsense:
+  enable: false
+
+# 前端依赖改为本地自托管（不依赖 jsDelivr，国内访问更稳）
+cdn:
+  fontawesome: /vendor/fontawesome/css/all.min.css
+  jquery: /vendor/jquery/jquery.min.js
+  velocity: /vendor/velocity/velocity.min.js
+  velocity_ui: /vendor/velocity/velocity.ui.min.js

@@ -1,0 +1,112 @@
+# ---------------------------------------------------------------
+# Hexo 主配置
+# 文档：https://hexo.io/zh-cn/docs/configuration
+# ---------------------------------------------------------------
+
+# 站点信息
+title: Nocturne
+subtitle: '深夜编码手记'
+description: '在终端与夜色之间，记录构建互联网的每一个细节：前端工程、性能优化与界面设计。'
+keywords: 前端,性能优化,CSS,TypeScript,设计系统
+author: 像素
+language: zh-CN
+timezone: 'Asia/Shanghai'
+
+# 网址
+# 换域名后只改这一行：url: https://xwhy.live
+url: https://nocturne-blog.app.workbuddy.host
+root: /
+permalink: :year/:month/:day/:title/
+permalink_defaults:
+
+# 目录
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render:
+
+# 写作
+new_post_name: :title.md
+default_layout: post
+titlecase: false
+external_link:
+  enable: true
+  field: site
+  exclude: ''
+filename_case: 0
+render_drafts: false
+post_asset_folder: false
+relative_link: false
+future: true
+
+# 代码高亮
+syntax_highlighter: highlight.js
+highlight:
+  enable: true
+  line_number: true
+  auto_detect: false
+  tab_replace: ''
+  wrap: true
+  hljs: false
+prismjs:
+  enable: false
+  preprocess: true
+  line_number: true
+  tab_replace: ''
+
+# 首页与分页
+index_generator:
+  path: ''
+  per_page: 6
+  order_by: -date
+
+default_category: 未分类
+category_map:
+tag_map:
+
+# 日期
+date_format: YYYY-MM-DD
+time_format: HH:mm
+updated_option: 'date'
+
+# 分页
+per_page: 6
+pagination_dir: page
+
+# 包含 / 排除
+include:
+exclude:
+ignore:
+
+# 主题
+theme: stun
+
+# 站内搜索索引（配合主题 local_search）
+search:
+  path: search.xml
+  field: post
+  format: html
+  content: true
+  limit: 10000
+
+# RSS
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
+  content: true
+
+# 部署
+# 默认走 .github/workflows/deploy.yml 自动发布，这里留空即可。
+# 想手动推到仓库的 gh-pages 分支的话，改成：
+#   deploy:
+#     type: git
+#     repo: git@github.com:<你的用户名>/nocturne-blog.git
+#     branch: gh-pages
+deploy:
+  type: ''

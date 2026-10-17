@@ -1,0 +1,12 @@
+# 统一换行，避免 Windows 下提交的 CRLF 让 CI 里的 YAML/脚本出现诡异问题
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
