@@ -5,29 +5,34 @@
   "description": "Nocturne · 基于 Hexo + Stun 的个人技术博客",
   "scripts": {
     "clean": "hexo clean",
-    "build": "hexo generate",
+    "build": "hexo generate && pagefind --site public",
     "server": "hexo server",
     "deploy": "hexo deploy",
-    "set-root": "node scripts/set-site-root.js"
+    "set-root": "node tools/set-site-root.js"
   },
   "hexo": {
-    "version": "6.3.0"
+    "version": "7.3.0"
   },
   "dependencies": {
-    "hexo": "^6.3.0",
+    "hexo": "^7.3.0",
     "hexo-deployer-git": "^4.0.0",
+    "hexo-feed": "^1.1.2",
     "hexo-generator-archive": "^2.0.0",
     "hexo-generator-category": "^2.0.0",
-    "hexo-generator-feed": "^4.0.0",
-    "hexo-generator-index": "^3.0.0",
-    "hexo-generator-search": "^2.4.3",
+    "hexo-generator-index": "^4.0.0",
     "hexo-generator-tag": "^2.0.0",
+    "hexo-renderer-aether": "^0.0.6",
     "hexo-renderer-ejs": "^2.0.0",
     "hexo-renderer-marked": "^5.0.0",
     "hexo-renderer-pug": "^3.0.0",
     "hexo-renderer-stylus": "^2.1.0",
     "hexo-server": "^3.0.0",
-    "hexo-theme-stun": "^2.8.0",
-    "hexo-wordcount": "^6.0.1"
+    "hexo-theme-shokax": "^0.5.4",
+    "hexo-wordcount": "^6.0.1",
+    "nyx-player": "^0.1.1",
+    "shokax-uikit": "^0.0.5"
+  },
+  "devDependencies": {
+    "pagefind": "^1.5.2"
   }
 }

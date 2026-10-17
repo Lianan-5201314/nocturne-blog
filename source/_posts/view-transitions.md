@@ -8,7 +8,7 @@ tags:
   - API
   - 渐进增强
 description: "不做 SPA 也能有流畅的页面转场。聊聊 View Transitions API 的原理、降级策略，以及三个容易翻车的细节。"
-top_image: /images/covers/view-transitions.svg
+cover: /images/covers/view-transitions.svg
 ---
 用户判断一个网站"快不快"，很大程度上取决于**切换瞬间发生了什么**。白屏 300ms 会让人觉得慢，哪怕实际加载只用了 200ms。
 

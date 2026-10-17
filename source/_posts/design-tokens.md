@@ -8,7 +8,7 @@ tags:
   - 设计系统
   - 架构
 description: "很多团队抄了一套 token 命名，却没抄到背后的抽象层级。这篇文章给出一个能撑住三年的 token 结构。"
-top_image: /images/covers/design-tokens.svg
+cover: /images/covers/design-tokens.svg
 ---
 `--color-primary` 是最容易被滥用的变量名。它的问题不是不好用，而是**它把决策和取值绑死了**。
 

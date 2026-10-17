@@ -1,0 +1,7 @@
+# 文章未设置 cover 时的兜底图（至少 6 张，ShokaX 的 randomBG 硬性要求）
+- /images/covers/rendering-pipeline.svg
+- /images/covers/css-layers.svg
+- /images/covers/view-transitions.svg
+- /images/covers/typescript-narrowing.svg
+- /images/covers/design-tokens.svg
+- /images/covers/web-performance-budget.svg

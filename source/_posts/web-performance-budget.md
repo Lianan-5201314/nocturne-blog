@@ -8,7 +8,7 @@ tags:
   - CI/CD
   - 工程化
 description: "没有预算的性能优化，最后都会输给排期。这篇讲如何用 Lighthouse CI 把 Core Web Vitals 钉在流水线里。"
-top_image: /images/covers/web-performance-budget.svg
+cover: /images/covers/web-performance-budget.svg
 ---
 "这个页面有点慢" —— 这句话在评审会上没有杀伤力，因为它无法被反驳，也无法被验证。
 

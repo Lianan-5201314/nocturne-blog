@@ -31,10 +31,10 @@ jobs:
         run: npm ci
 
       - name: Resolve url and root (user page vs project page)
-        run: node scripts/set-site-root.js "${{ github.repository_owner }}" "${{ github.event.repository.name }}"
+        run: node tools/set-site-root.js "${{ github.repository_owner }}" "${{ github.event.repository.name }}"
 
       - name: Build site
-        run: npx hexo generate
+        run: npm run build
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

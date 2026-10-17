@@ -8,7 +8,7 @@ tags:
   - 架构
   - 可维护性
 description: "!important 越写越多、选择器越写越长，是时候把层叠顺序交还给浏览器了。@layer 能让优先级变成显式契约。"
-top_image: /images/covers/css-layers.svg
+cover: /images/covers/css-layers.svg
 ---
 一个项目跑了两年之后，样式表通常会长成三种东西的混合物：组件样式、工具类，以及一堆用来"压过别人"的补丁。
 

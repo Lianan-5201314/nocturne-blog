@@ -1,30 +1,41 @@
 # Nocturne · 深夜编码手记
 
-基于 [Hexo 6](https://hexo.io/) + [Stun 2.8](https://github.com/liuyib/hexo-theme-stun) 的个人技术博客。
+基于 [Hexo 7](https://hexo.io/) + [ShokaX 0.5](https://github.com/theme-shoka-x/hexo-theme-shokaX) 的个人技术博客。
 纯静态输出，无需数据库，任何静态托管都能跑。
 
 - 在线站点：https://nocturne-blog.app.workbuddy.host/
-- 主题能力：夜间模式、文章目录、阅读进度、字数/阅读时长、站内搜索、RSS、分类与标签、CC BY-NC-SA 版权
-- 所有前端依赖（FontAwesome / jQuery / Velocity）已自托管在 `source/vendor/`，**不请求 jsDelivr**
+- 仓库：https://github.com/Lianan-5201314/nocturne-blog
+- 主题能力：亮/暗双模式（可按时间自动切换）、首页六宫格头图、文章目录、阅读进度、字数统计、分类与标签云、Atom/RSS/JSON Feed、KaTeX 公式、代码块复制
+- 前端依赖走 `at.alicdn.com` / `s4.zstatic.net` 两个国内可达 CDN，字体不加载 Google Fonts
 
 ## 目录结构
 
 ```
 .
-├─ _config.yml            # 站点配置：标题、作者、url、永久链接
-├─ _config.stun.yml       # 主题配置：导航、侧栏、目录、搜索、配色
-├─ scaffolds/             # hexo new 生成文章/页面的模板
+├─ _config.yml            # Hexo 配置：标题、作者、url、永久链接、markdown 渲染、feed
+├─ _config.shokax.yml     # 主题配置：导航、侧栏、颜色、模块开关（与主题默认值合并）
+├─ scaffolds/             # hexo new 生成文章的模板
+├─ tools/
+│  └─ set-site-root.js    # CI 里按仓库形态改写 url / root（不要放进 scripts/）
 ├─ source/
-│  ├─ _posts/             # 文章 Markdown（正文都在这）
+│  ├─ _posts/             # 文章 Markdown
+│  ├─ _data/
+│  │  ├─ assets/          # 头像等会被复制到 /assets/ 的图片
+│  │  ├─ images.yml       # 文章无 cover 时的兜底图（≥ 6 张，否则首页构建失败）
+│  │  └─ images_index.yml # 首页六宫格头图（≥ 6 张）
 │  ├─ about/              # 关于页
 │  ├─ categories/ tags/   # 分类页、标签页
-│  ├─ images/             # 头像、favicon、文章封面
-│  └─ vendor/             # 自托管的前端依赖
+│  └─ images/             # favicon、文章封面
 ├─ .github/workflows/     # GitHub Pages 自动部署
 └─ .gitignore             # 忽略 node_modules / public / db.json
 ```
 
+> `scripts/` 这个目录名在 Hexo 里是**插件目录**，放进去的任意 `.js` 都会被当作插件加载。
+> 一旦里面有带 shebang 的普通脚本，构建会报 `Script load failed` 并且首页生成为 0 字节，所以工具脚本放在 `tools/`。
+
 ## 本地开发
+
+需要 **Node.js ≥ 20**（ShokaX 的硬性要求）。
 
 ```bash
 npm install          # 首次
@@ -39,7 +50,7 @@ npm run clean        # 清理缓存
 npx hexo new post "文章标题"
 ```
 
-会生成 `source/_posts/文章标题.md`，填写 front-matter：
+`source/_posts/文章标题.md` 的 front-matter：
 
 ```yaml
 ---
@@ -51,86 +62,53 @@ tags:
   - CSS
   - 布局
 description: "列表页摘要与搜索结果里显示的这句话"
-top_image: /images/covers/xxx.svg   # 可选，文章头图
+cover: /images/covers/xxx.svg   # 文章头图，留空则从 images.yml 随机取
 ---
 ```
 
-> `description` 的值**建议加引号**。像 `!important` 开头或在里面出现 `: ` 的句子，不加引号会被 YAML 当成标签或键值对，构建直接报错。
+- 摘要分隔用 `<!-- more -->`，分隔符之前的内容会显示在首页卡片上。
+- `description` 建议加引号：以 `!` 开头或含 `: ` 的句子不加引号，YAML 会解析失败。
+- 数学公式用 `$$ ... $$`，主题内置 KaTeX。
 
 ## 部署
 
-### 方式一：GitHub Pages（推荐，push 即上线）
+### 方式一：GitHub Pages（push 即上线）
 
-1. 在 GitHub 建一个空仓库，例如 `nocturne-blog`（不要勾选 README）。
-2. 关联并推送：
+`.github/workflows/deploy.yml` 会在每次 push 到 `main` 时自动构建并发布：
 
-```bash
-git remote add origin git@github.com:<你的用户名>/nocturne-blog.git
-git push -u origin main
-```
+1. 仓库 **Settings → Pages → Build and deployment → Source 选 `GitHub Actions`**（工作流里已开 `enablement: true`，多数情况下会自动完成）。
+2. 访问地址：
+   - 仓库名 `<用户名>.github.io` → `https://<用户名>.github.io/`
+   - 其他名字（项目页）→ `https://<用户名>.github.io/<仓库名>/`
 
-3. 仓库 **Settings → Pages → Build and deployment → Source 选 `GitHub Actions`**。
-4. 之后每次 `git push`，`.github/workflows/deploy.yml` 会自动 `npm ci` + `hexo generate` 并发布。
+工作流会调用 `tools/set-site-root.js` 自动改写 `url` 与 `root`，**不需要手动改 `_config.yml`**；如果放了 `source/CNAME`，则自动改用自定义域名。
 
-访问地址：
+> 私有仓库（Private）不能使用 GitHub Pages，免费账号必须把仓库设为 Public。
 
-- 仓库名叫 `<用户名>.github.io` → `https://<用户名>.github.io/`
-- 其他名字（项目页）→ `https://<用户名>.github.io/<仓库名>/`
+### 方式二：任意静态托管
 
-工作流会自动识别这两种情况并改写 `url` 与 `root`，**不需要手动改 `_config.yml`**。
-如果改了仓库名，记得在 Actions 里重新跑一次（Actions → Deploy Hexo to GitHub Pages → Run workflow）。
-
-### 方式二：Gitee Pages
-
-```bash
-git remote add origin git@gitee.com:<你的用户名>/nocturne-blog.git
-git push -u origin main
-```
-
-Gitee 的 Pages 服务需要在仓库页面 **服务 → Gitee Pages** 里手动开启/更新（默认分支根目录或 `docs/`），
-因此需要把构建产物一起提交，或改用 `gh-pages` 分支：
-
-```bash
-npx hexo generate
-cd public && git init && git add -A && git commit -m "deploy" \
-  && git push -f git@gitee.com:<你的用户名>/nocturne-blog.git main:gh-pages
-```
-
-### 方式三：手动推到任意仓库的 gh-pages 分支
-
-编辑 `_config.yml`：
-
-```yaml
-deploy:
-  type: git
-  repo: git@github.com:<你的用户名>/nocturne-blog.git
-  branch: gh-pages
-```
-
-然后 `npm run deploy`（`hexo-deployer-git` 已装好，会把 `public/` 推到该分支）。
+`npm run build` 后把 `public/` 整个目录上传到 Vercel / Netlify / Cloudflare Pages / 对象存储即可，无服务端依赖。
 
 ### 绑定自己的域名（例如 xwhy.live）
 
-1. `source/CNAME` 新建文件，内容只有一行：`xwhy.live`
-2. 在域名服务商添加解析：
-   - 根域名 `xwhy.live` → 4 条 A 记录指向 `185.199.108.153` / `185.199.109.153` / `185.199.110.153` / `185.199.111.153`
-   - `www` → CNAME 指向 `<你的用户名>.github.io`
-3. 把 `_config.yml` 的 `url` 改成 `https://xwhy.live`，push。
-4. 仓库 Settings → Pages → Custom domain 填 `xwhy.live`，勾选 Enforce HTTPS。
-
-Gitee Pages 的自定义域名需要会员，且国内域名需先完成 ICP 备案。
+1. `source/CNAME` 写入一行：`xwhy.live`
+2. 域名解析：根域名加 4 条 A 记录 `185.199.108.153` / `185.199.109.153` / `185.199.110.153` / `185.199.111.153`；`www` 用 CNAME 指向 `<用户名>.github.io`
+3. 仓库 Settings → Pages → Custom domain 填 `xwhy.live`，勾选 Enforce HTTPS
 
 ## 常见坑
 
-| 现象 | 原因 |
+| 现象 | 原因与处理 |
 |---|---|
-| 页面没样式，控制台 404 `/css/...` | `root` 与部署路径不匹配（项目页需要 `/仓库名/`），见方式一的自动处理 |
-| 构建报 `duplicated mapping key` | `_config.stun.yml` 里同一个键写了两次（如两个 `cdn:`） |
-| 构建报 YAML 错误 | `description` 未加引号且含 `:` / 以 `!` 开头 |
+| 首页/归档页生成为 0 字节，日志说 `image_list must have at least 6 items` | `source/_data/images_index.yml`（或 `images.yml`）少于 6 条，补齐即可 |
+| `[SXEC 102] Critical rendering plugins are missing` | `package.json` 的 dependencies 里必须显式声明 `shokax-uikit`、`hexo-renderer-aether`、`nyx-player`，只装在 node_modules 里不算 |
+| `[SXEC 101] Highlight.js or Prismjs enabled` | `_config.yml` 里 `syntax_highlighter: false`，代码高亮由主题接管 |
+| 构建报 `Script load failed: scripts/xxx.js` | `scripts/` 被当成插件目录，工具脚本挪到 `tools/` |
+| 页面没样式、控制台 404 `/css/...` | `root` 与部署路径不匹配（项目页需要 `/<仓库名>/`），交给 `tools/set-site-root.js` 处理 |
 | GitHub Actions 成功但页面 404 | Settings → Pages 的 Source 还没切到 `GitHub Actions` |
-| `ssh: connect to host github.com port 22: Connection refused` | 公司网络/代理挡了 22 端口，改用 443：`~/.ssh/config` 里写 `Host github.com` / `HostName ssh.github.com` / `Port 443` |
-| 订阅/分享链接指向旧域名 | 改完 `_config.yml` 的 `url` 后要重新 `hexo generate` |
+| `ssh: connect to host github.com port 22: Connection refused` | 用 443：`~/.ssh/config` 写 `Host github.com` / `HostName ssh.github.com` / `Port 443` |
+| 想开站内搜索 | 主题用 Pagefind，需要 `hexo generate` 之后额外跑一次 `pagefind --site public`，再把 `_config.shokax.yml` 的 `pagefind.enable` 设为 `true` |
 
 ## 许可
 
-文章内容采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh) 协议。
+- 文章内容：[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)
+- 主题 ShokaX：AGPL-3.0-or-later（含[附加使用限制](https://github.com/theme-shoka-x/hexo-theme-shokaX/blob/main/UsageRestrictions.md)）

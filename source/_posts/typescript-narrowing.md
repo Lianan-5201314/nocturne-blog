@@ -8,7 +8,7 @@ tags:
   - 类型系统
   - 工程化
 description: "as 不是类型检查器，是让检查器闭嘴。这篇讲清收窄的六种手段，以及为什么你的 switch 里还需要一个 never 检查。"
-top_image: /images/covers/typescript-narrowing.svg
+cover: /images/covers/typescript-narrowing.svg
 ---
 写 TypeScript 三年之后，你会发现大部分 `as` 都是同一个原因：**你比编译器更早知道了类型，但没有告诉它**。
 

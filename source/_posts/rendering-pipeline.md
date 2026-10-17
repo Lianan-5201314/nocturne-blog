@@ -8,7 +8,7 @@ tags:
   - 渲染
   - DevTools
 description: "从 HTML 字节流到屏幕上的像素，中间到底发生了什么？我们用一张图、五个阶段，加上真实的 DevTools 证据，把渲染流水线讲透。"
-top_image: /images/covers/rendering-pipeline.svg
+cover: /images/covers/rendering-pipeline.svg
 ---
 几乎每一次"页面怎么这么卡"的讨论，最后都会落到同一个问题上：**你到底在第几步花了时间？**
 

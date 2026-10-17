@@ -1,6 +1,7 @@
 # ---------------------------------------------------------------
 # Hexo 主配置
 # 文档：https://hexo.io/zh-cn/docs/configuration
+# 主题：ShokaX 0.5（配置在 _config.shokax.yml）
 # ---------------------------------------------------------------
 
 # 站点信息
@@ -43,20 +44,9 @@ post_asset_folder: false
 relative_link: false
 future: true
 
-# 代码高亮
-syntax_highlighter: highlight.js
-highlight:
-  enable: true
-  line_number: true
-  auto_detect: false
-  tab_replace: ''
-  wrap: true
-  hljs: false
-prismjs:
-  enable: false
-  preprocess: true
-  line_number: true
-  tab_replace: ''
+# 代码高亮：交给 ShokaX 自己处理，Hexo 内置高亮必须关掉
+# Hexo >= 7 用 syntax_highlighter: false；6.x 则用 highlight.enable / prismjs.enable
+syntax_highlighter: false
 
 # 首页与分页
 index_generator:
@@ -83,30 +73,52 @@ exclude:
 ignore:
 
 # 主题
-theme: stun
+theme: shokax
 
-# 站内搜索索引（配合主题 local_search）
-search:
-  path: search.xml
-  field: post
-  format: html
-  content: true
-  limit: 10000
+# Markdown 渲染（ShokaX 使用 markdown-it，目录与锚点类名必须是 toc / anchor）
+markdown:
+  render:
+    html: false
+    xhtmlOut: true
+    breaks: true
+    linkify: true
+    typographer:
+    quotes: "“”‘’"
+  plugins:
+    - plugin:
+        name: markdown-it-toc-and-anchor
+        enable: true
+        options:
+          tocClassName: "toc"
+          anchorClassName: "anchor"
+    - plugin:
+        name: markdown-it-multimd-table
+        enable: true
+        options:
+          multiline: true
+          rowspan: true
+          headerless: true
 
-# RSS
+# RSS / Atom / JSON Feed（由 hexo-feed 生成，模板来自主题）
 feed:
-  type: atom
-  path: atom.xml
   limit: 20
-  hub:
-  content: true
+  order_by: "-date"
+  tag_dir: false
+  category_dir: false
+  rss:
+    enable: true
+    template: "node_modules/hexo-theme-shokax/layout/_alternate/rss.ejs"
+    output: "rss.xml"
+  atom:
+    enable: true
+    template: "node_modules/hexo-theme-shokax/layout/_alternate/atom.ejs"
+    output: "atom.xml"
+  jsonFeed:
+    enable: true
+    template: "node_modules/hexo-theme-shokax/layout/_alternate/json.ejs"
+    output: "feed.json"
 
 # 部署
 # 默认走 .github/workflows/deploy.yml 自动发布，这里留空即可。
-# 想手动推到仓库的 gh-pages 分支的话，改成：
-#   deploy:
-#     type: git
-#     repo: git@github.com:<你的用户名>/nocturne-blog.git
-#     branch: gh-pages
 deploy:
   type: ''
