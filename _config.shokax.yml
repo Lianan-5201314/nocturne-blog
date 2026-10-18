@@ -26,16 +26,26 @@ experiments:
   antiFakeWebsite: true # 防止恶意网站伪装
 
 homeConfig:
-  gradient: false # 使用CSS渐变作为文章封面
+  gradient: true # 使用CSS渐变作为文章封面
   # fixedCover 性能比默认的更好，且开启时将启用LCP优化和预加载
-  fixedCover: "/images/covers/css-layers.svg" # 主页面cover(为空则使用bing随机图片)
+  fixedCover: '' # 主页面cover(为空则使用bing随机图片)
   coverConfig:
     enableCover: true # 是否开启头图
     enablePreload: true #是否开启预加载头图
     enableNextGradientCover: false # 使用CSS渐变作为上/下一页封面
   cateCards:
     - slug: 梦音分部
-      cover: _cate/梦音分部.svg
+      cover: _cate/CSS.svg
+    - slug: 怜爱理财笔记
+      cover: _cate/TypeScript.svg
+    - slug: 梦音成员档案
+      cover: _cate/交互体验.svg
+    - slug: KO组建计划
+      cover: _cate/性能优化.svg
+    - slug: 知识笔记
+      cover: _cate/浏览器原理.svg
+    - slug: 星舞日常开销
+      cover: _cate/设计工程.svg
 
 # ShokaX 模块化分包引入设置
 # 请关闭所有不使用的模块以优化主题 js 体积和性能
