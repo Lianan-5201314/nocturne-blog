@@ -33,19 +33,7 @@ homeConfig:
     enableCover: true # 是否开启头图
     enablePreload: true #是否开启预加载头图
     enableNextGradientCover: false # 使用CSS渐变作为上/下一页封面
-  cateCards:
-    - slug: CSS
-      cover: _cate/CSS.svg
-    - slug: TypeScript
-      cover: _cate/TypeScript.svg
-    - slug: 交互体验
-      cover: _cate/交互体验.svg
-    - slug: 性能优化
-      cover: _cate/性能优化.svg
-    - slug: 浏览器原理
-      cover: _cate/浏览器原理.svg
-    - slug: 设计工程
-      cover: _cate/设计工程.svg
+  cateCards: [] # 有文章分类后再填：- slug: 分类名 / cover: _cate/xxx.svg
 
 # ShokaX 模块化分包引入设置
 # 请关闭所有不使用的模块以优化主题 js 体积和性能
@@ -180,8 +168,7 @@ menu:
   home: / || home
   about: /about/ || user
   posts:
-    default: /archives/ || feather
-    archives: /archives/ || list-alt
+    default: /categories/ || feather   # 暂无文章，归档页不生成，先指向分类页；发文后改回 /archives/
     categories: /categories/ || th
     tags: /tags/ || tags
 
