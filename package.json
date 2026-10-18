@@ -8,6 +8,7 @@
     "new": "hexo new post",
     "build": "hexo generate && pagefind --site public",
     "server": "hexo server",
+    "poster": "node tools/poster/server.js --open",
     "deploy": "hexo deploy",
     "set-root": "node tools/set-site-root.js"
   },
