@@ -142,7 +142,7 @@ function listCovers() {
   try {
     return fs
       .readdirSync(path.join(IMAGES_DIR, 'covers'))
-      .filter((f) => /\.(svg|png|jpe?g|webp|gif)$/i.test(f))
+      .filter((f) => /\.(png|jpe?g|webp|gif)$/i.test(f))
       .filter((f) => !IGNORE_COVERS.has(f))
       .map((f) => '/images/covers/' + f);
   } catch (_) {
