@@ -34,17 +34,17 @@ homeConfig:
     enablePreload: true #是否开启预加载头图
     enableNextGradientCover: false # 使用CSS渐变作为上/下一页封面
   cateCards:
-    - slug: 梦音分部
+    - slug: CSS
       cover: _cate/CSS.svg
-    - slug: 怜爱理财笔记
+    - slug: TypeScript
       cover: _cate/TypeScript.svg
-    - slug: 梦音成员档案
+    - slug: 交互体验
       cover: _cate/交互体验.svg
-    - slug: KO组建计划
+    - slug: 性能优化
       cover: _cate/性能优化.svg
-    - slug: 知识笔记
+    - slug: 浏览器原理
       cover: _cate/浏览器原理.svg
-    - slug: 星舞日常开销
+    - slug: 设计工程
       cover: _cate/设计工程.svg
 
 # ShokaX 模块化分包引入设置

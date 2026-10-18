@@ -41,7 +41,9 @@ try {
 /* ------------------------------------------------------------------ 基础工具 */
 
 function read(file) {
-  return fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
+  if (!fs.existsSync(file)) return '';
+  // 统一行尾：Windows 编辑器改过的配置常是 CRLF，直接 split('\n') 会让每行末尾带 \r，YAML 解析全挂
+  return fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 }
 
 function mkdirp(dir) {
@@ -97,7 +99,8 @@ async function git(args) {
 /* ------------------------------------------------------------------ YAML 逐行改写（保留注释） */
 
 function parseLine(line) {
-  const m = line.match(/^(\s*)([^\s:#][^:]*):(\s*)(.*)$/);
+  const clean = line.replace(/\r$/, '');
+  const m = clean.match(/^(\s*)([^\s:#][^:]*):(\s*)(.*)$/);
   if (!m) return null;
   return { indent: m[1].length, key: m[2], value: m[4], comment: '' };
 }
@@ -424,8 +427,12 @@ function saveState(payload) {
 
   /* --- 分类卡片 --- */
   if (Array.isArray(theme.cateCards)) {
+    const cats = postsCategories();
     const cards = theme.cateCards.filter((c) => c.slug).map((c, i) => {
       const cover = c.cover ? c.cover : ensureCateCover(c.slug, i);
+      if (cats.indexOf(c.slug) === -1) {
+        notes.push(`分类「${c.slug}」在文章里不存在，首页不会显示这张卡片（需先有该分类的文章）`);
+      }
       return { slug: c.slug, cover };
     });
     const block = [];

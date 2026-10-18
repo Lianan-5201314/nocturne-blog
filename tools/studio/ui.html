@@ -85,6 +85,8 @@
   .row .del:hover{color:var(--red)}
   .cate-cover{width:46px;height:32px;border-radius:6px;overflow:hidden;flex:none;border:1px solid var(--line);background:#22222f}
   .cate-cover img{width:100%;height:100%;object-fit:cover;display:block}
+  .warn{margin-top:10px;padding:9px 12px;border-radius:10px;background:rgba(233,84,107,.10);border:1px solid rgba(233,84,107,.36);color:#ff9fb0;font-size:12px;line-height:1.65}
+  .warn b{color:#ffc3ce;font-weight:600}
 
   .preview-mask{position:fixed;inset:0;background:rgba(6,6,10,.72);backdrop-filter:blur(6px);z-index:60;display:none;padding:22px}
   .preview-mask.on{display:block}
@@ -236,11 +238,11 @@
     <div class="panel" id="p-cate">
       <div class="sec">
         <h3>首页「精选分类」卡片</h3>
-        <div class="sub">只有列在这里的分类才会出现在首页。留空封面会自动生成一张渐变图。</div>
+        <div class="sub">这里只能选「文章里已存在的分类」——分类名由文章 front-matter 决定，写了不存在的名字整块版块会消失。留空封面会自动生成一张渐变图。</div>
         <div class="rows" id="cateRows"></div>
+        <div class="warn" id="cateWarn" style="display:none"></div>
         <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
-          <input type="text" id="newCate" placeholder="分类名，例如：日常" list="catList" style="max-width:220px">
-          <datalist id="catList"></datalist>
+          <select id="newCate" style="max-width:240px"></select>
           <button class="btn" id="btnAddCate">添加分类卡片</button>
         </div>
       </div>
@@ -396,27 +398,48 @@
   }
 
   /* ---------- 分类卡片 ---------- */
+  function realCats(){
+    return (state.meta.categories || []);
+  }
+
   function renderCates(){
     var cards = state.theme.cateCards || [];
     var covers = state.meta.cateCovers || [];
+    var cats = realCats();
     $('cateRows').innerHTML = cards.map(function(c, i){
       var selected = c.cover || '';
-      var opts = ['<option value="">自动生成渐变</option>'].concat(covers.map(function(cv){
+      var coverOpts = ['<option value="">自动生成渐变</option>'].concat(covers.map(function(cv){
         return '<option value="' + cv + '"' + (cv === selected ? ' selected' : '') + '>' + cv.replace('_cate/', '') + '</option>';
       })).join('');
+      var list = cats.indexOf(c.slug) === -1 ? cats.concat([c.slug]) : cats;
+      var slugOpts = list.map(function(name){
+        var bad = cats.indexOf(name) === -1;
+        return '<option value="' + name + '"' + (name === c.slug ? ' selected' : '') + '>' + name + (bad ? '（文章里没有）' : '') + '</option>';
+      }).join('');
       var img = selected ? '<img src="/files/_posts/' + selected + '">' : '<div style="display:grid;place-items:center;font-size:10px;color:#5f5f76">自动</div>';
       return '<div class="row" data-i="' + i + '">' +
         '<div class="cate-cover">' + img + '</div>' +
-        '<input type="text" value="' + c.slug + '" data-role="slug" style="max-width:180px">' +
-        '<select data-role="cover" style="max-width:220px">' + opts + '</select>' +
+        '<select data-role="slug" style="max-width:180px">' + slugOpts + '</select>' +
+        '<select data-role="cover" style="max-width:220px">' + coverOpts + '</select>' +
         '<button class="btn" data-role="upload">上传</button>' +
         '<button class="del" data-role="del" title="移除">×</button>' +
         '</div>';
     }).join('') || '<div style="color:#5f5f76;font-size:12.5px">还没有分类卡片</div>';
 
+    var missing = cards.map(function(c){ return c.slug; }).filter(function(s){ return cats.indexOf(s) === -1; });
+    var box = $('cateWarn');
+    if (missing.length){
+      box.style.display = 'block';
+      box.innerHTML = '<b>这些分类在文章里不存在：</b>' + missing.join('、') +
+        '<br>ShokaX 只渲染「文章真实分类」对应的卡片，所以这些条目不会出现在首页，整块版块也可能因此消失。想让它们显示，需要新建文章时把 front-matter 的 <b>categories</b> 写成同名，或先在这里换成已有分类。';
+    } else {
+      box.style.display = 'none';
+      box.innerHTML = '';
+    }
+
     Array.prototype.forEach.call(document.querySelectorAll('#cateRows .row'), function(row){
       var i = +row.dataset.i;
-      row.querySelector('[data-role=slug]').oninput = function(e){ state.theme.cateCards[i].slug = e.target.value.trim(); markDirty(); };
+      row.querySelector('[data-role=slug]').onchange = function(e){ state.theme.cateCards[i].slug = e.target.value; renderCates(); markDirty(); };
       row.querySelector('[data-role=cover]').onchange = function(e){ state.theme.cateCards[i].cover = e.target.value; renderCates(); markDirty(); };
       row.querySelector('[data-role=del]').onclick = function(){ state.theme.cateCards.splice(i, 1); renderCates(); markDirty(); };
       row.querySelector('[data-role=upload]').onclick = function(){
@@ -438,11 +461,22 @@
     });
   }
 
+  function renderNewCate(){
+    var used = (state.theme.cateCards || []).map(function(c){ return c.slug; });
+    var left = realCats().filter(function(c){ return used.indexOf(c) === -1; });
+    $('newCate').innerHTML = left.length
+      ? left.map(function(c){ return '<option value="' + c + '">' + c + '</option>'; }).join('')
+      : '<option value="">（没有可添加的分类了）</option>';
+    $('newCate').disabled = !left.length;
+    $('btnAddCate').disabled = !left.length;
+  }
+
   $('btnAddCate').onclick = function(){
-    var v = $('newCate').value.trim();
+    var v = $('newCate').value;
     if (!v) return;
+    if ((state.theme.cateCards || []).some(function(c){ return c.slug === v; })) { toast('这个分类已经在卡片里了', true); return; }
     state.theme.cateCards.push({ slug: v, cover: '' });
-    $('newCate').value = '';
+    renderNewCate();
     renderCates();
     markDirty();
   };
@@ -575,13 +609,12 @@
       return '<option value="' + c + '"' + (c === s.theme.home.fixedCover ? ' selected' : '') + '>' + c.replace('/images/covers/', '') + '</option>';
     }).join('');
 
-    $('catList').innerHTML = (s.meta.categories || []).map(function(c){ return '<option value="' + c + '">'; }).join('');
-
     $('colorHex').value = s.primaryColor;
     $('colorPicker').value = /^#[0-9a-f]{6}$/i.test(s.primaryColor) ? s.primaryColor : '#e9546b';
     syncColor('hex');
     renderCoverPreview();
     renderCates();
+    renderNewCate();
     renderSocial();
     bindSwitches();
   }
