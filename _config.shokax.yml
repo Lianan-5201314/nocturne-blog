@@ -102,7 +102,7 @@ loader:
 # 显示的动画(烟花)
 # 参阅 https://github.com/D-Sketon/mouse-firework
 fireworks:
-  enable: true
+  enable: false
   options:
     excludeElements: ["a"]
     particles:
