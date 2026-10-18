@@ -222,9 +222,8 @@ async function publish(payload) {
   const t = stamp(now);
   const slug = `${slugify(rawTitle || 'note')}-${t.y}${t.m}${t.d}-${t.hh}${t.mm}${t.ss}`;
 
-  const covers = listCovers();
-  let cover = String(payload.cover || '').trim();
-  if (!cover && covers.length) cover = covers[Math.floor(Math.random() * covers.length)];
+  // 不选封面时留空，交给主题在每次构建时从 source/_data/images.yml 随机抽一张
+  const cover = String(payload.cover || '').trim();
 
   const tags = (Array.isArray(payload.tags) ? payload.tags : String(payload.tags || '').split(/[,，\s]+/))
     .map((t2) => String(t2).trim())

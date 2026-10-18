@@ -1,7 +1,10 @@
-# 文章未设置 cover 时的兜底图（至少 6 张，ShokaX 的 randomBG 硬性要求）
-- /images/covers/rendering-pipeline.svg
-- /images/covers/css-layers.svg
-- /images/covers/view-transitions.svg
-- /images/covers/typescript-narrowing.svg
-- /images/covers/design-tokens.svg
-- /images/covers/web-performance-budget.svg
+# 文章封面随机池（未设置 cover 的文章每次构建从这里随机取一张，至少 6 张）
+- /images/covers/5-154cb3.jpg
+- /images/covers/bz1-6b2d5d.png
+- /images/covers/bz2-dab33b.jpg
+- /images/covers/bz3-c9051c.jpg
+- /images/covers/09-d656a3.jpg
+- /images/covers/10-fe3ce7.jpg
+- /images/covers/07-282771.jpeg
+- /images/covers/08-fbae2c.jpeg
+- /images/covers/6-4bc3e0.jpg
