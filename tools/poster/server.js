@@ -248,7 +248,8 @@ async function publish(payload) {
     tags.forEach((c) => lines.push(`  - ${c}`));
   }
   if (desc) lines.push(`description: '${yamlEscape(desc)}'`);
-  if (cover) lines.push(`cover: ${cover}`);
+  // ShokaX 的 _cover 会用 statics('/') 拼一次前缀，cover 带前导 / 会变成 //images/... 被当成协议相对地址而裂图
+  if (cover) lines.push(`cover: ${cover.replace(/^\/+/, '')}`);
   lines.push('---', '');
 
   const dir = isDraft ? DRAFTS_DIR : POSTS_DIR;
