@@ -12,6 +12,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const os = require('os');
 const { execFile, spawn } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..', '..');
@@ -78,7 +79,10 @@ function uniqueFile(dir, base) {
 
 function run(cmd, args, opts = {}) {
   return new Promise((resolve) => {
-    execFile(cmd, args, { cwd: ROOT, maxBuffer: 8 * 1024 * 1024, ...opts }, (err, stdout, stderr) => {
+    // HOME 若是 /c/Users/xxx 这类 MSYS 路径，原生 ssh 读不到 known_hosts，统一换成 Windows 路径
+    const winHome = process.env.USERPROFILE || os.homedir();
+    const env = { ...process.env, HOME: winHome };
+    execFile(cmd, args, { cwd: ROOT, maxBuffer: 8 * 1024 * 1024, env, ...opts }, (err, stdout, stderr) => {
       resolve({
         ok: !err,
         code: err && typeof err.code === 'number' ? err.code : err ? 1 : 0,
